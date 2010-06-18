@@ -21,7 +21,7 @@ Here's the data behind a product listing…
     			review: "It's awesome."
     		}
     	]
-    };
+    },
 
 …here's how you want to render it…
 
@@ -31,7 +31,7 @@ Here's the data behind a product listing…
     			['%p.name', {key:'reviewer'}, ' (', ['%span', {key:'date'}], ')'],
     			['%p', {key:'review'}]
     	]}]
-    ],
+    ];
 
 Run it through `stencil` and `jquery-haml`…
 
