@@ -33,9 +33,9 @@ Here's the data behind a product listing…
     	]}]
     ];
 
-Run it through `stencil` and `jquery-haml`…
+Run it through `stencil`…
 
-	$(document.body).haml(stencil(template, data));
+	$(document.body).stencil(template, data);
 	
 …and DOM comes out.
 
