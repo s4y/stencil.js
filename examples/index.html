@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+	<title>stencil.js &ndash; Demo!</title>
+	<script type="text/javascript" src="js/jquery.min.js"></script>
+	<script type="text/javascript" src="js/jquery.haml.js"></script>
+	<script type="text/javascript" src="js/showdown.js"></script>
+	<script type="text/javascript" src="../stencil.js"></script>
+	<script type="text/javascript">
+	    var data = {
+		    	name: "Food blender",
+		    	price: "99.95",
+		    	reviews: [
+		    		{
+		    			reviewer: "Bob",
+		    			date: "2010-06-18T00:14:40.687Z",
+		    			review: "It sucks."
+		    		},
+		    		{
+		    			reviewer: "Steve",
+		    			date: "2010-06-19T00:14:40.687Z",
+		    			review: "It's awesome."
+		    		}
+		    	]
+		    },
+	    	template = ['#product',
+		    	['%h1', {key:'name'}], ['%h2', {key:'price'}],
+		    	['%ul#reviews', {key: 'reviews', children:['%li',
+		    			['%p.name', {key:'reviewer'}, ' (', ['%span', {key:'date'}], ')'],
+		    			['%p', {key:'review'}]
+		    	]}]
+		    ];
+		
+		$(document).ready(function(){
+			$(document.body).haml(stencil(template, data));
+		});
+	</script>
+</head>
+
+<body>
