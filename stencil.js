@@ -41,6 +41,8 @@
 			if ('key' in template) {
 				if (template.handler) {
 					template = template.handler.call(bound ? data.resolve(template.key) : data[template.key]);
+				} else if (template.template) {
+					return [stencil(template.template, bound ? data.resolve(template.key) : data[template.key])];
 				} else if (template.children) {
 					if (bound) {
 						return boundNodeSet(template.children, data.resolve(template.key), template.callback);
