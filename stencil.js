@@ -8,11 +8,17 @@
 	}
 	function boundNodeSet(template, trapper, callback){
 		var placeholder = $.haml.placeholder(function(){
-			if (trapper.store.length) {
-				var haml = [];
+			var haml = [];
+			if ($.isPlainObject(trapper.store)) {
+				for (var key in trapper.store) {
+					haml.push(stencil(template, trapper.store[key], key))
+				}
+			} else {
 				for (var i = 0, l = trapper.store.length; i < l; i++){
 					haml.push(stencil(template, trapper.store[i]));
-				};
+				}
+			}
+			if (haml.length) {
 				return haml;
 			} else {
 				return document.createTextNode('');
@@ -29,7 +35,7 @@
 		if ($.isArray(template)) {
 			template = Array.prototype.slice.call(template, 0);
 			for(var i = 0, l = template.length; i < l; i++){
-				template.splice(i, 1, stencil(template[i], data, index));
+				template.splice(i, 1, stencil(template[i], data, i));
 			}
 		} else if($.isPlainObject(template)) {
 			if ('key' in template) {
@@ -39,17 +45,17 @@
 					if (bound) {
 						return boundNodeSet(template.children, data.resolve(template.key), template.callback);
 					} else {
-						template = $.map(data[template.key], function(item){
+						template = $.map(template.key === "" ? data : data[template.key], function(item){
 							return [stencil(template.children, item)];
 						});
 					}
 				} else if (template.conditional) {
-					template = (bound ? data.resolve(template.key).get() : data[template.key]) ? stencil(template.conditional, data) : [];
+					template = (bound ? data.get(template.key) : data[template.key]) ? stencil(template.conditional, data) : [];
 				} else {
-					if (bound) {
+					if (bound && template.key !== '.') {
 						return boundTextNode(data.resolve(template.key));
 					} else {
-						template = (template.key === '' ? data : data[template.key] || '').toString();
+						template = (template.key === '' ? data : template.key === '.' ? index : data[template.key] === undefined ? '' : data[template.key]).toString();
 					}
 				}
 			} else if(index === 1) {
