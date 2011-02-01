@@ -18,7 +18,7 @@
 				} else if (template.conditional) {
 					template = (data[template.key]) ? stencil(template.conditional, data) : [];
 				} else {
-					template = (template.key === '' ? data : template.key === '.' ? index : data[template.key] === undefined ? '' : data[template.key]).toString();
+					template = (template.key === '' ? data : template.key === '.' ? index : (data[template.key] === undefined || data[template.key] == null) ? '' : data[template.key]).toString();
 				}
 			} else if(index === 1) {
 				template = $.extend({}, template);
