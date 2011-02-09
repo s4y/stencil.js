@@ -6,7 +6,9 @@
 				template.splice(i, 1, stencil(template[i], data, i));
 			}
 		} else if($.isPlainObject(template)) {
-			if ('key' in template) {
+			if ('join' in template) {
+				return stencil(template.join, data).join(template.separator || '');
+			} else if ('key' in template) {
 				if (template.handler) {
 					template = template.handler.call(data[template.key]);
 				} else if (template.template) {
