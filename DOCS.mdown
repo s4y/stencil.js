@@ -1,0 +1,71 @@
+## Overview
+
+Stencil is a templating language built on top of jquery-haml. It combines data — like an array of comments, or an error message — with a template describing the HTML that displays it.
+
+Stencil aims to be language-agnostic and eval-free — you *declare* the structure and logic of the template, rather than describing it with a mixture of code and HTML. Stencil templates are DOM-built, thanks to jquery-haml, so you can include callbacks and event handlers, and they're injection-proof under most circumstances.
+
+You usually call stencil like this:
+
+    $(parentElement).stencil(template, data);
+
+Here's a simple example of an error message:
+
+    <div class="error">
+    	<h1>General knowledge failure</h1>
+    	<p>We don't have enough information about you to display the home page. Please click on some advertisements, complete your profile, and tweet about us to your friends, and we will be happy to tell you what exactly our website is all about.</p>
+    </div>
+
+The stencil template looks like this:
+
+    ['.error',
+    	['%h1', { $key: 'title' }],
+    	['%p', { $key: 'message' }]
+    ]
+
+Displaying the error looks like this:
+
+    $('#page').stencil(errorTemplate, { title: "General knowledge failure", message: "We don't have enou…" });
+
+## Syntax
+
+An object containing a stencil directive expands to the result of that directive, in the context of the current data. Here's some data to use with these examples:
+
+    {
+    	a: 'foo',
+    	b: 'bar,
+    	c: ['0', '1', '2'],
+    	d: { url: 'http://example.com/', text: 'qux' }
+    }
+
+- `$key`: The value of `$key`.
+
+  - An empty string means the current data (see `$key, $children` for an example).
+  - A single period means the current index in the array or object being iterated.
+
+  Example: `{ $key: 'a' }` → `"foo"`
+
+- `$key, $template`: The template in `$template`, run after descending into `$key`
+
+  Example: `{ $key: 'd', $template: [ '%a', { href: { $key: 'url' } }, { $key: 'text' } ] }` →
+  `<a href="http://example.com/">qux</a>`
+
+- `$key, $children`: The template in `$children`, run once for each item in the array or object `$key`
+
+  Example: `['%ul', { $key: 'c', $children: [ '%li', { $key: '' } ] } ]` →
+  `<ul><li>0</li><li>1</li><li>2</li></ul>`
+
+- `$test, [$if], [$else]` - Evaluate the template in `$test`. If it's truthy, run `$if`, else run `$else` (both `$if` and `$else` are optional, but this directive isn't very useful without at least one)
+
+  *Example needed*
+
+- `$or` - Takes an array; the first truthy item in the array, or the last item in the array if none are truthy (like JavaScript's `||`) (each item is evaluated as a stencil template
+
+  *Example needed*
+
+- `$handler, [$key]` - *Description needed*
+
+  *Example needed*
+
+- `$join, [$separator]` - *Description needed*
+
+  *Example needed*
