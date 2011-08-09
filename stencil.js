@@ -25,7 +25,7 @@
 			} else if ('$handler' in template) {
 				return template.$handler.call(template, ('$key' in template) ? data[template.$key] : data);
 			} else if ('$template' in template) {
-				return (data[template.$key]) ? [stencil(template.$template, data[template.$key], index, template.$key)] : [];
+				return (data[template.$key]) ? stencil(template.$template, data[template.$key], index, template.$key) : [];
 			} else if ('$children' in template) {
 				data = template.$key ? data[template.$key] : data;
 				if ( ! data) { return []; }
